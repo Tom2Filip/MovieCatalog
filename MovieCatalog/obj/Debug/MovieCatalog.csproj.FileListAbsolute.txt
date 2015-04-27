@@ -1,0 +1,13 @@
+D:\web\projekti\MovieCatalog\MovieCatalog\bin\MovieCatalog.dll
+D:\web\projekti\MovieCatalog\MovieCatalog\bin\MovieCatalog.pdb
+D:\web\projekti\MovieCatalog\MovieCatalog\obj\Debug\ResolveAssemblyReference.cache
+D:\web\projekti\MovieCatalog\MovieCatalog\obj\Debug\MovieCatalog.dll
+D:\web\projekti\MovieCatalog\MovieCatalog\obj\Debug\MovieCatalog.pdb
+D:\web\projekti\MovieCatalog\MovieCatalog\bin\DropDownCheckBoxes.dll
+D:\web\projekti\MovieCatalog\MovieCatalog\bin\DropDownCheckBoxes.pdb
+D:\web\projekti\MovieCatalog\MovieCatalog\bin\EntityFramework.SqlServer.dll
+D:\web\projekti\MovieCatalog\MovieCatalog\bin\EntityFramework.dll
+D:\web\projekti\MovieCatalog\MovieCatalog\bin\EntityFramework.SqlServer.xml
+D:\web\projekti\MovieCatalog\MovieCatalog\bin\EntityFramework.xml
+D:\web\projekti\MovieCatalog\MovieCatalog\bin\DocumentFormat.OpenXml.dll
+D:\web\projekti\MovieCatalog\MovieCatalog\bin\OfficeFileProperties.dll

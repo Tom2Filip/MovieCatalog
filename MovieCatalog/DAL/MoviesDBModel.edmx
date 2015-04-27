@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="MoviesDBModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityContainer Name="MoviesDBModelStoreContainer">
+          <EntitySet Name="Movies" EntityType="MoviesDBModel.Store.Movies" store:Type="Tables" Schema="dbo" />
+        </EntityContainer>
+        <EntityType Name="Movies">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ContentProvider" Type="nvarchar" MaxLength="50" />
+          <Property Name="OriginalName" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Genre" Type="nvarchar" Nullable="false" MaxLength="20" />
+          <Property Name="Duration" Type="time" Precision="0" />
+          <Property Name="Country" Type="nvarchar" Nullable="false" MaxLength="3000" />
+          <Property Name="RightsIPTV" Type="nvarchar" MaxLength="3000" />
+          <Property Name="RightsVOD" Type="nvarchar" MaxLength="3000" />
+          <Property Name="SVODRights" Type="varchar" MaxLength="5" />
+          <Property Name="AncillaryRights" Type="varchar" MaxLength="5" />
+          <Property Name="StartDate" Type="date" />
+          <Property Name="ExpireDate" Type="date" />
+          <Property Name="Year" Type="smallint" Nullable="false" />
+          <Property Name="Comment" Type="nvarchar" MaxLength="300" />
+        </EntityType>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="MoviesDBModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityContainer Name="MoviesDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Movies" EntityType="MoviesDBModel.Movie" />
+        </EntityContainer>
+        <EntityType Name="Movie">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ContentProvider" Type="String" MaxLength="50" Unicode="true" FixedLength="false" Nullable="true" />
+          <Property Name="OriginalName" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="Genre" Type="String" Nullable="false" MaxLength="20" Unicode="true" FixedLength="false" />
+          <Property Name="Duration" Type="Time" Nullable="true" />
+          <Property Name="Country" Type="String" Nullable="false" MaxLength="3000" Unicode="true" FixedLength="false" />
+          <Property Name="RightsIPTV" Type="String" MaxLength="3000" Unicode="true" FixedLength="false" />
+          <Property Name="RightsVOD" Type="String" MaxLength="3000" Unicode="true" FixedLength="false" />
+          <Property Name="SVODRights" Type="String" Unicode="true" FixedLength="true" MaxLength="5" />
+          <Property Name="AncillaryRights" Type="String" MaxLength="5" Unicode="true" FixedLength="true" />
+          <Property Name="StartDate" Type="DateTime" />
+          <Property Name="ExpireDate" Type="DateTime" />
+          <Property Name="Year" Type="Int16" Nullable="false" />
+          <Property Name="Comment" Type="String" MaxLength="300" Unicode="true" FixedLength="false" Nullable="true" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="MoviesDBModelStoreContainer" CdmEntityContainer="MoviesDBEntities">
+          <EntitySetMapping Name="Movies"><EntityTypeMapping TypeName="MoviesDBModel.Movie"><MappingFragment StoreEntitySet="Movies">
+            <ScalarProperty Name="Id" ColumnName="Id" />
+            <ScalarProperty Name="ContentProvider" ColumnName="ContentProvider" />
+            <ScalarProperty Name="OriginalName" ColumnName="OriginalName" />
+            <ScalarProperty Name="Genre" ColumnName="Genre" />
+            <ScalarProperty Name="Duration" ColumnName="Duration" />
+            <ScalarProperty Name="Country" ColumnName="Country" />
+            <ScalarProperty Name="RightsIPTV" ColumnName="RightsIPTV" />
+            <ScalarProperty Name="RightsVOD" ColumnName="RightsVOD" />
+            <ScalarProperty Name="SVODRights" ColumnName="SVODRights" />
+            <ScalarProperty Name="AncillaryRights" ColumnName="AncillaryRights" />
+            <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+            <ScalarProperty Name="ExpireDate" ColumnName="ExpireDate" />
+            <ScalarProperty Name="Year" ColumnName="Year" />
+            <ScalarProperty Name="Comment" ColumnName="Comment" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams>
+      <Diagram Name="MoviesDBModel" ZoomLevel="114">
+        <EntityTypeShape EntityType="MoviesDBModel.Movie" Width="1.5" PointX="0.75" PointY="0.75" Height="3.2357796223958331" IsExpanded="true" />
+      </Diagram>
+    </Diagrams>
+  </Designer>
+</edmx:Edmx>

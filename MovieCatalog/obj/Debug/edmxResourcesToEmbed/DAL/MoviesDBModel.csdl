@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="MoviesDBModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+  <EntityContainer Name="MoviesDBEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Movies" EntityType="MoviesDBModel.Movie" />
+  </EntityContainer>
+  <EntityType Name="Movie">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ContentProvider" Type="String" MaxLength="50" Unicode="true" FixedLength="false" Nullable="true" />
+    <Property Name="OriginalName" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="Genre" Type="String" Nullable="false" MaxLength="20" Unicode="true" FixedLength="false" />
+    <Property Name="Duration" Type="Time" Nullable="true" />
+    <Property Name="Country" Type="String" Nullable="false" MaxLength="3000" Unicode="true" FixedLength="false" />
+    <Property Name="RightsIPTV" Type="String" MaxLength="3000" Unicode="true" FixedLength="false" />
+    <Property Name="RightsVOD" Type="String" MaxLength="3000" Unicode="true" FixedLength="false" />
+    <Property Name="SVODRights" Type="String" Unicode="true" FixedLength="true" MaxLength="5" />
+    <Property Name="AncillaryRights" Type="String" MaxLength="5" Unicode="true" FixedLength="true" />
+    <Property Name="StartDate" Type="DateTime" />
+    <Property Name="ExpireDate" Type="DateTime" />
+    <Property Name="Year" Type="Int16" Nullable="false" />
+    <Property Name="Comment" Type="String" MaxLength="300" Unicode="true" FixedLength="false" Nullable="true" />
+  </EntityType>
+</Schema>

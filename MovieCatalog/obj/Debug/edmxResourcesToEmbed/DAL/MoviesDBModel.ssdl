@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="MoviesDBModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+  <EntityContainer Name="MoviesDBModelStoreContainer">
+    <EntitySet Name="Movies" EntityType="MoviesDBModel.Store.Movies" store:Type="Tables" Schema="dbo" />
+  </EntityContainer>
+  <EntityType Name="Movies">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="ContentProvider" Type="nvarchar" MaxLength="50" />
+    <Property Name="OriginalName" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="Genre" Type="nvarchar" Nullable="false" MaxLength="20" />
+    <Property Name="Duration" Type="time" Precision="0" />
+    <Property Name="Country" Type="nvarchar" Nullable="false" MaxLength="3000" />
+    <Property Name="RightsIPTV" Type="nvarchar" MaxLength="3000" />
+    <Property Name="RightsVOD" Type="nvarchar" MaxLength="3000" />
+    <Property Name="SVODRights" Type="varchar" MaxLength="5" />
+    <Property Name="AncillaryRights" Type="varchar" MaxLength="5" />
+    <Property Name="StartDate" Type="date" />
+    <Property Name="ExpireDate" Type="date" />
+    <Property Name="Year" Type="smallint" Nullable="false" />
+    <Property Name="Comment" Type="nvarchar" MaxLength="300" />
+  </EntityType>
+</Schema>

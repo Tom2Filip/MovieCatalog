@@ -1,0 +1,64 @@
+﻿        .DtView1 td, .DtView1 th
+        {   
+        border: 1px solid #A7A6AA;
+        }
+        .DtView1 td
+        {
+            font-weight:bold;
+            padding:3px;                    
+        }
+            
+        /* first Row - Header  */        
+        .DtView1  tr.header1
+        {         
+            height:28px;             
+            color:#FFF;
+            font-size:14px;
+            font-weight:bold;
+            background:-o-linear-gradient(bottom, #005fbf 5%, #003f7f 100%);	
+            background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #005fbf), color-stop(1, #003f7f) );
+	        background:-moz-linear-gradient( center top, #005fbf 5%, #003f7f 100% );
+	        filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="#005fbf", endColorstr="#003f7f");	
+	        background: -o-linear-gradient(top,#005fbf,003f7f);
+	     }
+	                    
+        .DtView1 .alternating
+        {
+            background-color:#EFEFEF;
+        }
+        .DtView1 .command
+        {
+            border:2px solid #EBE9ED;
+            height:28px;  
+            color:#CCC;
+            font-size:14px;
+            font-weight:bold;
+            border: 1px solid #CCC;
+            border-left-color:#CCC;
+            border-right-color:#CCC;
+            border-bottom-color:#CCC;
+            background:-o-linear-gradient(bottom, #005fbf 5%, #003f7f 100%);	
+            background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #005fbf), color-stop(1, #003f7f) );
+	        background:-moz-linear-gradient( center top, #005fbf 5%, #003f7f 100% );
+	        filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="#005fbf", endColorstr="#003f7f");	
+	        background: -o-linear-gradient(top,#005fbf,003f7f);
+        }
+        
+        .DtView1 .command a
+        {          
+            color:#FEFEFE;
+            font:14px Sans-Serif;
+            font-weight:bold;
+            text-decoration:none;
+            padding:2px;
+        }
+        
+      .DtView1 .command a:hover
+        {
+          color:#CCC; 
+        }
+        
+      .DtView1 .pager td
+        {
+            padding:2px;
+        }

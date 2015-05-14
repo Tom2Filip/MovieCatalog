@@ -46,9 +46,6 @@
 </asp:ListView>
 
 
-<br />
-<asp:Button ID="btnCheck" runat="server" onclick="btnCheck_Click" Text="Check Movies" />
-<br />
 <p><asp:Button ID="btnExportToExcel" Text="Export to Excel" runat="server" onclick="btnExportToExcel_Click" /></p>
 
 <p><asp:Button ID="btnViewExportedData" Text="View Exported Data" runat="server" onclick="ViewData" /></p>
@@ -95,5 +92,5 @@
     </asp:ListView>
     
     <asp:Label ID="lblMessage2" runat="server"></asp:Label>
-
+   
 </asp:Content>

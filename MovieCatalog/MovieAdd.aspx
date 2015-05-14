@@ -162,9 +162,7 @@
                                 DisplayMode="BulletList"/>
       <asp:Label ID="lblMessage" runat="server"></asp:Label>
 
-<br />
-    <asp:TextBox ID="Textbox1" runat="server" ></asp:TextBox>
-    <asp:Button ID="btnDate" Text="Date"  runat ="server" onclick="btnDate_Click" />
+<br />       
     <asp:Label ID="Label1" runat="server"></asp:Label>
 
 <!-- Must be if DropDownCheckBox control is used within WebForm that inherits MasterPage -->

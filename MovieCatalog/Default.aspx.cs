@@ -4,15 +4,20 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Data.Entity.Core;
 using MovieCatalog.DAL;
 using MovieCatalog.BLL;
 using System.Data;
+
+using System.Data.Entity;
+using System.Data.Entity.Core;
+using System.Data.Entity.Core.Objects;
 
 using System.IO;
 //www.microsoft.com/en-us/download/confirmation.aspx?id=20923
 using Excel = Microsoft.Office.Interop.Excel;
 using ExcelAutoFormat = Microsoft.Office.Interop.Excel.XlRangeAutoFormat;
+
+using System.Reflection;
 
 namespace MovieCatalog
 {
@@ -20,6 +25,11 @@ namespace MovieCatalog
     {
         // counter for selected items in filterMoviesCheckBoxList
         public int selectedItems = 0;
+
+        protected void Page_Init(object sender, EventArgs e)
+        {
+            GridView1.EnableDynamicData(typeof(Movie));
+        }
         
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -30,7 +40,6 @@ namespace MovieCatalog
             }
         }
 
-        // srediti filtriranje - uz sortiranje
         protected void FilterButton_Click(object sender, EventArgs e)
         {
             lblMessage.Text = "";
@@ -59,7 +68,6 @@ namespace MovieCatalog
         // try catch block for exception handling is added where "FilterMovies()" method is called
        protected List<Movie> FilterMovies()
        {
-               // MoviesDBEntities context2 = new MoviesDBEntities();
                MovieCatalogBL context1 = new MovieCatalogBL();
 
                // if both Items are selected
@@ -72,14 +80,12 @@ namespace MovieCatalog
                        	       
 		// if only one (first) Item is selected
                else if (filterMoviesCheckBoxList.SelectedIndex == 0)
-               { // ako je index 0 onda samo prvi rights (SVOD), inače samo drugi rights (Ancillary)                 
-                   //var query = context2.Movies.Where(m => m.SVODRights == "Yes").ToList();
+               { // if index is 0 then only first rights (SVOD), else only second rights (Ancillary)                 
                    var query1 = context1.GetMovies().Where(m => m.SVODRights == "Yes").ToList();
                    return query1;
                }
                else // try this - (filterMoviesCheckBoxList.SelectedIndex == 1) -> NO!
                { // if index NOT 0 then only second rights (Ancillary) - (if index NOT 0 then it's 1, because there is only 2 items in list)
-                   //var query = context2.Movies.Where(m => m.AncillaryRights == "Yes").ToList();
                    var query1 = context1.GetMovies().Where(m => m.AncillaryRights == "Yes").ToList();
                    return query1;
                }                                                       
@@ -116,6 +122,7 @@ namespace MovieCatalog
        
        private void BindGridView1()
        {
+           //try - START
            try
            {
                // if "sortDirection" is not set then on first PageLoad there will be error
@@ -136,18 +143,12 @@ namespace MovieCatalog
                    if (ViewState["SortExpression"] != null)
                    {
                        sortExpression = ViewState["SortExpression"].ToString();
-                       // dv.Sort = string.Concat(sortExpression, " ", sortDirection);
-                       // Sort the query
-                       // stackoverflow.com/questions/722868/sorting-a-list-using-lambda-linq-to-objects
-                       // This is how I solved my problem:
                        if (sortDirection == "ASC")
                        {
-                           //query = FilterMovies().OrderBy(mov => mov.GetType().GetProperty(sortExpression).GetValue(mov, null)).ToList();
                            query = query.OrderBy(mov => mov.GetType().GetProperty(sortExpression).GetValue(mov, null)).ToList();
                        }
                        else if (sortDirection == "DESC")
                        {
-                           //query = FilterMovies().OrderByDescending(mov => mov.GetType().GetProperty(sortExpression).GetValue(mov, null)).ToList();
                            query = query.OrderByDescending(mov => mov.GetType().GetProperty(sortExpression).GetValue(mov, null)).ToList();
                        }
                    }
@@ -163,19 +164,13 @@ namespace MovieCatalog
                    if (ViewState["SortExpression"] != null)
                    {
                        sortExpression = ViewState["SortExpression"].ToString();
-                       // dv.Sort = string.Concat(sortExpression, " ", sortDirection);
-                       // Sort the query
-                       // stackoverflow.com/questions/722868/sorting-a-list-using-lambda-linq-to-objects
-                       // This is how I solved my problem:
                        if (sortDirection == "ASC")
                        {
                            query = FilterMovies().OrderBy(mov => mov.GetType().GetProperty(sortExpression).GetValue(mov, null)).ToList();
-                           //query = query.OrderBy(mov => mov.GetType().GetProperty(sortExpression).GetValue(mov, null)).ToList();
                        }
                        else if (sortDirection == "DESC")
                        {
                            query = FilterMovies().OrderByDescending(mov => mov.GetType().GetProperty(sortExpression).GetValue(mov, null)).ToList();
-                           //query = query.OrderByDescending(mov => mov.GetType().GetProperty(sortExpression).GetValue(mov, null)).ToList();
                        }
 
                    }
@@ -183,30 +178,23 @@ namespace MovieCatalog
                                           
                GridView1.DataSource = query;
                GridView1.DataBind();
-           }
-           catch (Exception)
+          // TRY -END 
+       }
+           catch (Exception ex)
            {
                lblMessage.ForeColor = System.Drawing.Color.Red;
-               lblMessage.Text = "An error occurred while retrieving movies. Please try again.";
+               lblMessage.Text = "An error occurred while retrieving movies. Please try again." + "<br/>" + ex.ToString();
            }
+           
        }
 
        protected void GridView1_PageIndexChanging(object sender, GridViewPageEventArgs e)
        {
            int pageIndex = e.NewPageIndex;         
-           /*
-           MovieCatalogBL context = new MovieCatalogBL();
-           var query = context.GetMovies();
-           GridView1.DataSource = query;
-           */
            GridView1.PageIndex = pageIndex;
            BindGridView1();           
-           //GridView1.DataBind();           
         }
 
-       // !! Srediti filtriranje - uz sortiranje - ako se sortira nakon filtriranja!!
-       //deepak-sharma.net/2012/10/25/gridview-paging-and-sorting-in-asp-net-without-using-a-datasource/
-       //www.dotnetgallery.com/kb/resource12-How-to-implement-paging-and-sorting-in-aspnet-Gridview-control.aspx
        protected void GridView1_Sorting(object sender, GridViewSortEventArgs e)
        {
            //lblMessage.Text = e.SortExpression + " " + e.SortDirection;
@@ -215,64 +203,12 @@ namespace MovieCatalog
            ViewState["SortExpression"] = e.SortExpression;
 
            GetSortDirection(sortExpression);
-           // ako je dva puta zaredom kliknuta !ISTA! kolumna onda mijenja iz ASC u DESC
-           //string sortDirection = GetSortDirection(e.SortExpression);
            string sortDirection = ViewState["SortDirection"].ToString();
            lblMessage.Text = e.SortExpression + " " + sortDirection;
 
-           BindGridView1();
-           // 17.04.2015.  commented -> same code in "BindGridView1()"
-           /*  BEGIN!
-           MovieCatalogBL context = new MovieCatalogBL();
-           var query = context.GetMovies();
-           
-           // stackoverflow.com/questions/722868/sorting-a-list-using-lambda-linq-to-objects
-           // This is how I solved my problem:
-           if (sortDirection == "ASC")
-           {
-               query = query.OrderBy(mov => mov.GetType().GetProperty(sortExpression).GetValue(mov, null)).ToList(); 
-           }
-           else if (sortDirection == "DESC")
-           {
-               query = query.OrderByDescending(mov => mov.GetType().GetProperty(sortExpression).GetValue(mov, null)).ToList();
-           }
-                      
-           GridView1.DataSource = query;
-           GridView1.DataBind(); 
-            END!!
-           */
-
-
-        
-           /*  !!!  !!!!     !!!!   !!!!    !!!!    !!!!    !!!!    !!!!    !!!!    !!!!
-           /// KUDVENKAT -https://www.youtube.com/watch?v=dmyLe6bKdtg
-           // string strSortDirection = e.SortDirection == SortDirection.Ascending ? "ASC" : "DESC";
-            var query = context.GetMovies();
-            query = query.OrderByDescending(m => m.Year).ToList();
-           //GridView1.DataSource = EmployeeDataAccessLayer.GetAllEmployees(e.SortExpression + " " + strSortDirection);
-            GridView1.DataSource = query;
-           GridView1.DataBind();
-
-         
-
-           // POGLEDATI PRVO !!
-           //stackoverflow.com/questions/22541592/paging-and-sorting-entity-framework-on-a-field-from-partial-class
-           //forums.asp.net/p/1976270/5655727.aspx?Paging+and+sorting+Entity+Framework+on+a+field+from+Partial+Class
-
-           /*
-            www.c-sharpcorner.com/UploadFile/8572ef/work-with-gridview-using-entity-framework/
-            * 
-            www.codewrecks.com/blog/index.php/2009/03/21/entity-framework-dynamic-sorting-and-pagination/
-            social.msdn.microsoft.com/Forums/en-US/c4d03fd8-3890-49a8-92de-4a0b3bd68d59/how-do-i-use-linq-to-sort-items-using-a-variable-sortorderingsubordering-scheme?forum=adodotnetentityframework
-            social.msdn.microsoft.com/Forums/en-US/86834aa4-c933-4ad0-bf9d-da1652d5e9dc/entity-framework-and-dynamic-order-by-statements?forum=adodotnetentityframework
-            www.codeproject.com/Tips/666957/Dynamic-Sorting-in-LINQ-Part
-           */      
-                    
+           BindGridView1();    
        }
         
-       // msdn.microsoft.com/en-us/library/system.web.ui.webcontrols.gridview.sorting%28v=vs.110%29.aspx
-       // msdn.microsoft.com/en-us/library/hwf94875%28v=vs.110%29.aspx
-       // msdn.microsoft.com/en-us/library/system.web.ui.webcontrols.gridviewsorteventargs.sortdirection%28v=vs.100%29.aspx
        private void GetSortDirection(string column)
        {
            // By default, set the sort direction to ascending.
@@ -339,11 +275,9 @@ namespace MovieCatalog
 
        }
 
-
-       //dotnetawesome.blogspot.com/2013/11/how-to-import-export-database-data-from_18.html
-       //www.encodedna.com/2013/01/asp.net-export-to-excel.htm
-       protected void btnExportToExcel_Click(object sender, EventArgs e)
+        protected void btnExportToExcel_Click(object sender, EventArgs e)
        {
+           
            try
            {
                MovieCatalogBL context = new MovieCatalogBL();
@@ -351,27 +285,16 @@ namespace MovieCatalog
                
                if (movieList.Count > 0)
                {
-                   //forums.asp.net/t/1813648.aspx?Any+difference+between+Server+MapPath+and+Server+MapPath+
-                   string path = Server.MapPath("exportedfiles\\");
-                   //string path2 = Server.MapPath("~\\d:\\exportedfiles\\");
-                   string path2 = Server.MapPath("~/d://exportedfiles/");
-                   //relativepath = "~/Images/Users/" + FriendID + "/";
+                   string path = Server.MapPath("~/exportedfiles/");                   
 
                    if (!Directory.Exists(path))   // CHECK IF THE FOLDER EXISTS. IF NOT, CREATE A NEW FOLDER.
                    {
                        Directory.CreateDirectory(path);
                    }
-                   if (!Directory.Exists(path2))   // CHECK IF THE FOLDER EXISTS. IF NOT, CREATE A NEW FOLDER.
-                   {
-                       Directory.CreateDirectory(path2);
-                   }
 
-
+                   // "File.Delete" method does not throw an exception when a file doesn't exist.
                    File.Delete(path + "Movies.xls"); // DELETE THE FILE BEFORE CREATING A NEW ONE.
-                   // File.Delete(path + "MoviesToExpire.xlsx.xls"); // DELETE THE FILE BEFORE CREATING A NEW ONE.
-                   File.Delete(path2 + "Movies.xls"); // DELETE THE FILE BEFORE CREATING A NEW ONE.
-                   // File.Delete(path2 + "MoviesToExpire.xlsx.xls"); // DELETE THE FILE BEFORE CREATING A NEW ONE.
-
+                   
                    // ADD A WORKBOOK USING THE EXCEL APPLICATION.
                    Excel.Application xlAppToExport = new Excel.Application();
                    xlAppToExport.Workbooks.Add("");
@@ -437,28 +360,25 @@ namespace MovieCatalog
 
 
                    // Set width of Column                   
-                   xlWorkSheetToExport.Columns[2].ColumnWidth = 50;
-                   xlWorkSheetToExport.Columns[7].ColumnWidth = 50;
-                   xlWorkSheetToExport.Columns[8].ColumnWidth = 50;
-                                      
+                   xlWorkSheetToExport.Columns[2].ColumnWidth = 25;                    
+                   xlWorkSheetToExport.Columns[7].ColumnWidth = 25;
+                   xlWorkSheetToExport.Columns[8].ColumnWidth = 25;
+                                     
 
                    // SAVE THE FILE IN A FOLDER. (XLS or XLSX format)
                    xlWorkSheetToExport.SaveAs(path + "Movies.xls");
                    // xlWorkSheetToExport.SaveAs(path + "Movies.xlsx");
-                   xlWorkSheetToExport.SaveAs(path2 + "Movies.xls");
-                   // xlWorkSheetToExport.SaveAs(path2 + "Movies.xlsx");
-
+                   
                    // CLEAR.
                    xlAppToExport.Workbooks.Close();
                    xlAppToExport.Quit();
                    xlAppToExport = null;
                    xlWorkSheetToExport = null;
 
-
                    lblMessage.Text = "Data Exported.";
                    lblMessage.Attributes.Add("style", "color:green; font: bold 14px/16px Sans-Serif,Arial");
                }
-
+      
            }
            catch (IOException)
            {
@@ -470,12 +390,15 @@ namespace MovieCatalog
                lblMessage.Text = "There was an error while exporting data. Try again.";
                lblMessage.Attributes.Add("style", "color:red; font: bold 14px/16px Sans-Serif,Arial");
            }
+    
        }
         
        // VIEW THE EXPORTED EXCEL DATA.
        protected void ViewData(object sender, System.EventArgs e)
        {
-           string path = Server.MapPath("exportedfiles\\");
+         // change path as needed
+           string path = Server.MapPath("~/exportedfiles/");
+            
            try
            {
                // CHECK IF THE FOLDER EXISTS.
@@ -484,16 +407,24 @@ namespace MovieCatalog
                    // CHECK IF THE FILE EXISTS.
                    if (File.Exists(path + "Movies.xls"))
                    {
-                       // SHOW (NOT DOWNLOAD) THE EXCEL FILE.
-                       Excel.Application xlAppToView = new Excel.Application();
-                       xlAppToView.Workbooks.Open(path + "Movies.xls");
-                       xlAppToView.Visible = true;
+                       //www.daniweb.com/web-development/aspnet/threads/209532/how-to-open-an-excel-file-with-in-the-asp-net-web-page
+                       string strScript = "<script language=JavaScript>window.open('exportedfiles/" + "Movies" + ".xls','dn','width=1,height=1,toolbar=no,top=300,left=400,right=1, scrollbars=no,locaton=1,resizable=1');</script>";
+                       if (!Page.ClientScript.IsStartupScriptRegistered("clientScript"))
+                       {
+                           ClientScript.RegisterStartupScript(this.GetType(), "clientScript", strScript);
+                       }
+                                          
                    }
                    else
                    {
                        lblMessage.Text = "File with exported data does not exist.";
                        lblMessage.Attributes.Add("style", "color:red; font: bold 14px/16px Sans-Serif,Arial");
                    }
+               }
+               else
+               {
+                   lblMessage.Text = "Directory with exported data does not exist.";
+                   lblMessage.Attributes.Add("style", "color:red; font: bold 14px/16px Sans-Serif,Arial");
                }
 
            }
@@ -502,6 +433,7 @@ namespace MovieCatalog
                lblMessage.Text = "There was an error while opening file. Try again.";
                lblMessage.Attributes.Add("style", "color:red; font: bold 14px/16px Sans-Serif,Arial");
            }
+           
        }
 
 

@@ -64,13 +64,8 @@ namespace MovieCatalog
         {      
             try
             {
-                //MoviesDBEntities context = new MoviesDBEntities();
-                //Movie newMovie = new Movie();
-                 MovieCatalogRepository context2 = new MovieCatalogRepository();
-                 MovieCatalogBL contextBL = new MovieCatalogBL();
-                
-                 
-
+               MovieCatalogBL contextBL = new MovieCatalogBL();
+                                
                 string contentProvider = null;
                 if (e.Values["ContentProvider"] == null || e.Values["ContentProvider"].ToString() == "")
                 {
@@ -89,34 +84,6 @@ namespace MovieCatalog
                 //TimeSpan ts = TimeSpan.Parse(value);
                 TimeSpan movieDuration = TimeSpan.Zero;
 
-               /*
-                if (e.Values["Duration"] == null || e.Values["Duration"].ToString().Trim() == "")
-                {
-                    //movieDuration = TimeSpan.Zero;
-                }
-                else
-                {
-                    /*
-                    // gets the value of "Duration" field and converts it to string
-                    string durationString = e.Values["Duration"].ToString().Trim();
-                    // converts 'durationString' to TimeSpan
-                    movieDuration = TimeSpan.Parse(durationString);
-                    */
-                /*
-                    // find DropDownList control inside DetailsView
-                    DropDownList ddlHours = (DropDownList)MovieDetailsView.FindControl("ddlHours");
-                    DropDownList ddlMinutes = (DropDownList)MovieDetailsView.FindControl("ddlMinutes");
-                    DropDownList ddlSeconds = (DropDownList)MovieDetailsView.FindControl("ddlSeconds");
-
-                    string hours = ddlHours.SelectedValue.ToString();
-                    string minutes = ddlMinutes.SelectedValue.ToString();
-                    string seconds = ddlSeconds.SelectedValue.ToString();
-
-                    string duration1 = "Movie Duration: " + hours + ":" + minutes + ":" + seconds;
-                    movieDuration = TimeSpan.Parse(duration1);
-                                       
-                 }
-                */
                 // find DropDownList control inside DetailsView
                 DropDownList ddlHours = (DropDownList)MovieDetailsView.FindControl("ddlHours");
                 DropDownList ddlMinutes = (DropDownList)MovieDetailsView.FindControl("ddlMinutes");
@@ -183,9 +150,6 @@ namespace MovieCatalog
                 // if startDate is later than expireDate result is (1) greater than 0 (zero)
                 if (result > 0)
                 {
-                    // instead of "e.Cancel = true;" can be -> ((DetailsViewInsertEventArgs)e).Cancel = true;
-                    // www.noordam.it/validating-detailsview-field-values-during-insert-and-update/
-                    // has to be 'return' after 'e.Cancel = true;'  -> at least in some cases
                     e.Cancel = true;
                     ClientScript.RegisterStartupScript(this.GetType(), "myalert", "alert('" + relationship + "');", true);
                     return;
@@ -204,44 +168,12 @@ namespace MovieCatalog
                 
                 Int16 year = Convert.ToInt16(e.Values["Year"]);
 
-                /*
-                newMovie.ContentProvider = contentProvider;
-                newMovie.OriginalName = title;
-                newMovie.Genre = genre;
-                newMovie.Duration = movieDuration;
-                newMovie.Country = country;
-                
-                newMovie.RightsIPTV = rightsIPTV;
-                newMovie.RightsVOD = rightsVOD;
-                newMovie.SVODRights = svodRights;
-                newMovie.AncillaryRights = ancillaryRights;
-                
-                newMovie.StartDate = startDate;
-                newMovie.ExpireDate = expireDate;
-                
-                newMovie.Comment = comment;                
-                newMovie.Year = year;
-                */
-                //context.Movies.AddObject(newMovie);
-                // context.SaveChanges();
-                
                 contextBL.InsertMovie(contentProvider, title, genre, movieDuration, country, rightsIPTV, rightsVOD, svodRights, ancillaryRights, startDate, expireDate, comment, year);
                 lblMessage.ForeColor = System.Drawing.Color.Black;
-                lblMessage.Text = "Movie" + title + " added.";
-                //contextBL.InsertMovie(contentProvider, title, genre, movieDuration, country, rightsIPTV, rightsVOD, svodRights, ancillaryRights, startDate, expireDate, comment, year);
-                
+                lblMessage.Text = "Movie " + title + " added.";
+                                
             }
-            // If there's a need to check if the same movie already exists in database
-            //msdn.microsoft.com/en-us/library/system.data.objects.objectcontext.addobject%28v=vs.110%29.aspx
-            /*
-            catch (UpdateException ex)
-            {
-                throw new InvalidOperationException(string.Format(
-                    "The object could not be added. Make sure that a "
-                    + "product with a product number '{0}' does not aleady exist.\n",
-                    newProduct.ProductNumber), ex);
-            } 
-            */
+            
             catch(InvalidOperationException)
             {
                 lblMessage.ForeColor = System.Drawing.Color.Red;
@@ -263,24 +195,7 @@ namespace MovieCatalog
                 Response.Redirect("~/Default.aspx");
             }
         }
-
-        protected void btnDate_Click(object sender, EventArgs e)
-        {
-            DateTime dt;
-            //if (DateTime.TryParse(Textbox1.Text, out dt))
-                if (DateTime.TryParseExact( Textbox1.Text.Trim(), "d.M.yyyy", CultureInfo.CreateSpecificCulture("hr-HR"), DateTimeStyles.AllowWhiteSpaces, out dt))
-            {
-                Label1.Text = "Valid date format";
-            }
-            else
-            {
-                Label1.Text = "Invalid date format";
-            }
-               string relationship = "Expire Date is earlier than Start Date";
-               ClientScript.RegisterStartupScript(this.GetType(), "myalert", "alert('" + relationship + "');", true);
-        }
-
-
+        
         protected void calendarImage_Click(object sender, EventArgs e)
         {
             System.Web.UI.WebControls.Calendar cal = (System.Web.UI.WebControls.Calendar)MovieDetailsView.FindControl("startDateCalendar");
@@ -301,7 +216,6 @@ namespace MovieCatalog
             DropDownList DropDownListYear = (DropDownList)MovieDetailsView.FindControl("DropDownListYear");
             DropDownList DropDownListMonth = (DropDownList)MovieDetailsView.FindControl("DropDownListMonth");
 
-            //string year2 = DropDownListYear.Items.FindByValue(year1).ToString();
             DropDownListYear.Text = year1;
             DropDownListMonth.Text = month1;
                        
@@ -337,22 +251,19 @@ namespace MovieCatalog
             DropDownList ddl = (DropDownList)MovieDetailsView.FindControl("ddlAncillaryRights");
             TextBox ancRightsTextBox = (TextBox)MovieDetailsView.FindControl("txtBoxAncillaryRights");
             ancRightsTextBox.Text = ddl.SelectedItem.Text.ToString();
-            Label1.Text = ddl.SelectedItem.Text.ToString();         
-        }
+         }
 
         protected void ddlSVODRights_SelectedIndexChanged(object sender, EventArgs e)
         {
             DropDownList ddl2 = (DropDownList)MovieDetailsView.FindControl("ddlSVODRights");
             TextBox SVODRightsTextBox = (TextBox)MovieDetailsView.FindControl("txtBoxSVODRights");
             SVODRightsTextBox.Text = ddl2.SelectedItem.Text.ToString();
-            Label1.Text = ddl2.SelectedItem.Text.ToString();
         }
 
 
         public static List<string> CountriesList()
         {
-            // creating List
-            List<string> countriesList = new List<string>();
+             List<string> countriesList = new List<string>();
             // getting the specific CultureInfo from CultureInfo class
             CultureInfo[] getCultureInfo = CultureInfo.GetCultures(CultureTypes.SpecificCultures);
 
@@ -374,13 +285,9 @@ namespace MovieCatalog
 
         protected void ddlCountry_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // this event (ddlCountry_SelectedIndexChanged) occurs twice - probably because this Control - DropDownCheckBoxes - consists of two controls (DropDownList and CheckBoxList)
-            //ddlCountry_SelectedIndexChanged -= new System.EventHandler(this.ddlCountry_SelectedIndexChanged);
-
             CheckBoxList ddlCountry = (CheckBoxList)MovieDetailsView.FindControl("ddlCountry");
             TextBox txtBoxCountry = (TextBox)MovieDetailsView.FindControl("txtBoxCountry");
 
-            // double Postback! -> wrights countries twice inside TextBox if there's no next line of code
             txtBoxCountry.Text = "";
             // for counting selected items
             int i = 0;
@@ -390,7 +297,6 @@ namespace MovieCatalog
                 {
                     i++;
                     txtBoxCountry.Text += item.Text + ", ";
-                    // Label1.Text += ddlCountries2.SelectedItem.Value + ", ";
                 }
 
             }
@@ -403,23 +309,18 @@ namespace MovieCatalog
                 string newtextVOD = txtBoxCountry.Text.ToString().Remove(indexLastComa);
                 //newtextVOD =  newtextVOD.Remove(indexLastComa);
                 txtBoxCountry.Text = newtextVOD;
-                Label1.Text = newtextVOD;    
-            }
+             }
             
         }
 
 
         protected void ddlCountriesIPTV_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //ddlCountriesIPTV_SelectedIndexChanged -= new System.EventHandler(this.ddlCountriesIPTV_SelectedIndexChanged);
             CheckBoxList ddlCountriesIPTV = (CheckBoxList)MovieDetailsView.FindControl("ddlCountriesIPTV");
             TextBox txtBoxIPTVRights = (TextBox)MovieDetailsView.FindControl("txtBoxIPTVRights");
 
-            // double Postback! -> wrights countries twice inside TextBox if there's no next line of code
             txtBoxIPTVRights.Text = "";
-            // txtBoxVODRights.Text = ddlCountries2.SelectedItem.Text.ToString();
-            //Label1.Text = ddlCountries2.SelectedItem.Text.ToString();
-
+            
             // for counting selected items
             int i = 0;
 
@@ -429,7 +330,6 @@ namespace MovieCatalog
                 {
                     i++;
                     txtBoxIPTVRights.Text += item.Text + ", ";
-                    // Label1.Text += ddlCountries2.SelectedItem.Value + ", ";
                 }
 
             }
@@ -441,8 +341,7 @@ namespace MovieCatalog
                 int indexLastComa = txtBoxIPTVRights.Text.LastIndexOf(",");
                 // Remove last coma "," in a txtBoxIPTVRights string
                 string newtextIPTV = txtBoxIPTVRights.Text.ToString().Remove(indexLastComa);
-                txtBoxIPTVRights.Text = newtextIPTV;
-                Label1.Text = newtextIPTV;    
+                txtBoxIPTVRights.Text = newtextIPTV;    
             }
             
         }
@@ -450,15 +349,11 @@ namespace MovieCatalog
 
         protected void ddlCountriesVOD_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //ddlCountriesIPTV_SelectedIndexChanged -= new System.EventHandler(this.ddlCountriesIPTV_SelectedIndexChanged);
             CheckBoxList ddlCountriesVOD = (CheckBoxList)MovieDetailsView.FindControl("ddlCountriesVOD");
             TextBox txtBoxVODRights = (TextBox)MovieDetailsView.FindControl("txtBoxVODRights");
 
-            // double Postback! -> wrights countries twice inside TextBox if there's no next line of code
             txtBoxVODRights.Text = "";
-            // txtBoxVODRights.Text = ddlCountries2.SelectedItem.Text.ToString();
-            //Label1.Text = ddlCountries2.SelectedItem.Text.ToString();
-
+            
             // for counting selected items
             int i = 0;
 
@@ -468,7 +363,6 @@ namespace MovieCatalog
                 {
                     i++;
                     txtBoxVODRights.Text += item.Text + ", ";
-                    // Label1.Text += ddlCountries2.SelectedItem.Value + ", ";
                 }
 
             }
@@ -481,16 +375,11 @@ namespace MovieCatalog
                 // Remove last coma "," in a txtBoxIPTVRights string
                 string newtextIPTV = txtBoxVODRights.Text.ToString().Remove(indexLastComa);
                 txtBoxVODRights.Text = newtextIPTV;
-                Label1.Text = newtextIPTV;    
             }
             
         }
 
         
-
-        // www.youtube.com/watch?v=r4I-Pqvq4rA
-        // csharp-video-tutorials.blogspot.com/2013/01/navigating-to-specific-month-and-year.html
-
         private void LoadMonths()
         {
             DataSet dsMonths = new DataSet();
@@ -509,7 +398,7 @@ namespace MovieCatalog
             DropDownListMonth.DataBind();
             DropDownListExpMonth.DataBind();
         }
-        // stackoverflow.com/questions/14379898/add-next-previous-year-button-to-asp-calendar-control
+        
         private void LoadYears()
         {
             DropDownList DropDownListYear = (DropDownList)MovieDetailsView.FindControl("DropDownListYear");
@@ -566,14 +455,7 @@ namespace MovieCatalog
             startDateCalendar.VisibleDate = new DateTime(year, month, 1);
             startDateCalendar.SelectedDate = new DateTime(year, month, 1);
 
-            // Case: if selected Day in Month is 30 or 31 - if month is changed to February then exception will be thrown - System.ArgumentOutOfRangeException
-            // System.ArgumentOutOfRangeException: Year, Month, and Day parameters describe an un-representable DateTime.
-            /*
-            startDateCalendar.VisibleDate = new DateTime(year, month, startDateCalendar.SelectedDate.Day);
-            startDateCalendar.SelectedDate = new DateTime(year, month, startDateCalendar.SelectedDate.Day);
-            */
-            // show selected Month in TextBox - startDateTextBox
-            startDateCalendar_SelectionChanged(sender, e);
+           startDateCalendar_SelectionChanged(sender, e);
         }
 
         
@@ -606,13 +488,6 @@ namespace MovieCatalog
             expDateCalendar.VisibleDate = new DateTime(year, month, 1);
             expDateCalendar.SelectedDate = new DateTime(year, month, 1);
 
-            // Case: if selected Day in Month is 30 or 31 - if month is changed to February then exception will be thrown - System.ArgumentOutOfRangeException
-            // System.ArgumentOutOfRangeException: Year, Month, and Day parameters describe an un-representable DateTime.
-            /*
-            startDateCalendar.VisibleDate = new DateTime(year, month, startDateCalendar.SelectedDate.Day);
-            startDateCalendar.SelectedDate = new DateTime(year, month, startDateCalendar.SelectedDate.Day);
-            */
-            // show selected Month in TextBox - startDateTextBox
             expireDateCalendar_SelectionChanged(sender, e);
         }
 

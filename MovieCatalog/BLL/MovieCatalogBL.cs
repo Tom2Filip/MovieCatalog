@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using MovieCatalog.DAL;
+using System.Data.Entity;
 using System.Data.Entity.Core;
+using System.Data.Entity.Core.Objects;
 using System.Data.SqlClient;
 
 // The class implements the IDisposable interface to ensure that the database connection is released when the 

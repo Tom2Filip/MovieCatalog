@@ -8,6 +8,8 @@ using System.Data.Entity;
 using System.Data.Entity.Core;
 using System.Data.Objects;
 
+using System.Data.Entity.Core.Objects;
+
 namespace MovieCatalog.DAL
 {   // The class implements the IDisposable interface to ensure that the database connection is released 
     // when the object is disposed.

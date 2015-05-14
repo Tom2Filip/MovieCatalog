@@ -6,8 +6,6 @@
 
 <asp:Content ID="BodyContent" runat="server" ContentPlaceHolderID="MainContent">
 
-<!-- Pretvoriti u dll -> Deploy -->
-
     <h2>Welcome to Movie Catalog</h2>
                
     <asp:Label ID="lblFilter" Text="Filter by:" runat="server" AssociatedControlID="filterMoviesCheckBoxList"></asp:Label>
@@ -45,11 +43,7 @@
         </Columns>
     </asp:GridView>
     
-    <p>
-    <asp:Label ID="lblMessage" runat="server"></asp:Label>
-    </p>
-
-    <p><asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="~/MovieAdd.aspx">Add New Movie</asp:HyperLink></p>
+    <p><asp:Label ID="lblMessage" runat="server"></asp:Label></p>
 
     <p><asp:Button ID="btnExcel" Text="Export to Excel" runat="server" OnClick="btnExportToExcel_Click" /></p>
     <p><asp:Button ID="btnViewExportedData" Text="View Exported Data" runat="server" onclick="ViewData" /></p>

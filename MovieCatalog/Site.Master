@@ -39,7 +39,6 @@
                     <Items>
                         <asp:MenuItem NavigateUrl="~/Default.aspx" Text="Home"/>
                         <asp:MenuItem NavigateUrl="~/MovieAdd.aspx" Text="Add Movie"/>
-                        <asp:MenuItem NavigateUrl="~/About.aspx" Text="About"/>
                         <asp:MenuItem NavigateUrl="~/CheckMovies.aspx" Text="Check Movies"/>
                     </Items>
                 </asp:Menu>

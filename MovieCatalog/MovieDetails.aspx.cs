@@ -36,13 +36,10 @@ namespace MovieCatalog
             
             if (!IsPostBack)
             {
-                //MoviesDBEntities context = new MoviesDBEntities();
-                //MovieCatalogRepository context = new MovieCatalogRepository();
                 MovieCatalogBL contextBL = new MovieCatalogBL();
 
                 try
                 {   
-                  //var queryMovieByID = context.Movies.Where(m=>m.Id == movieID);
                     var queryMovieByID2 = contextBL.GetMovieByID(movieID);
                     // needs to be List
                     MovieDetailsView.DataSource = queryMovieByID2.ToList();
@@ -67,34 +64,7 @@ namespace MovieCatalog
                    // for Calendar control -- Year & Month DropDownLists
                    LoadYears();
                    LoadMonths();
-                  
-                    /*
-                    System.Web.UI.WebControls.Calendar calendarExpiry = (System.Web.UI.WebControls.Calendar)MovieDetailsView.FindControl("expireDateCalendar");
-                   //expireDateTextBox.Text = calendar.SelectedDate.ToShortDateString();
-                   DropDownList ddlExpiryYear = (DropDownList)MovieDetailsView.FindControl("DropDownListExpireYear");
-                   DropDownList ddlExpiryMonth = (DropDownList)MovieDetailsView.FindControl("DropDownListExpireMonth");
-                   ddlExpiryYear.Text = calendarExpiry.SelectedDate.Year.ToString();
-                   ddlExpiryMonth.Text = calendarExpiry.SelectedDate.Month.ToString();
-                    */
-                   
-                   /*
-                    System.Web.UI.WebControls.Calendar calendar = (System.Web.UI.WebControls.Calendar)MovieDetailsView.FindControl("expireDateCalendar");
-           TextBox expireDateTextBox = (TextBox)MovieDetailsView.FindControl("expireDateTextBox");
-           expireDateTextBox.Text = calendar.SelectedDate.ToShortDateString();
-           calendar.Visible = false;
-
-           // get Year and Month on Calendar selectionChanged and change it in DropDownLists (Year and Month ddl's)
-           string year2 = calendar.SelectedDate.Year.ToString();
-           string month2 = calendar.SelectedDate.Month.ToString();
-
-           DropDownList DropDownListExpYear = (DropDownList)MovieDetailsView.FindControl("DropDownListExpireYear");
-           DropDownList DropDownListExpMonth = (DropDownList)MovieDetailsView.FindControl("DropDownListExpireMonth");
-
-           //string year = DropDownListYear.Items.FindByValue(year2).ToString();
-           DropDownListExpYear.Text = year2;
-           DropDownListExpMonth.Text = month2;                    
-                 */
-
+             
                    // for movie production (make) year
                    LoadProductionYears();
                    DropDownList ddlProductionYear = (DropDownList)MovieDetailsView.FindControl("DropDownListProductionYear");
@@ -288,13 +258,9 @@ namespace MovieCatalog
 
         protected void ddlCountry_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // this event (ddlCountry_SelectedIndexChanged) occurs twice - probably because this Control - DropDownCheckBoxes - consists of two controls (DropDownList and CheckBoxList)
-            //ddlCountry_SelectedIndexChanged -= new System.EventHandler(this.ddlCountry_SelectedIndexChanged);
-
             CheckBoxList ddlCountry = (CheckBoxList)MovieDetailsView.FindControl("ddlCountry");
             TextBox txtBoxCountry = (TextBox)MovieDetailsView.FindControl("txtBoxCountry");
 
-            // double Postback! -> wrights countries twice inside TextBox if there's no next line of code
             txtBoxCountry.Text = "";
             // for counting selected items
             int i = 0;
@@ -371,11 +337,8 @@ namespace MovieCatalog
             CheckBoxList ddlCountriesIPTV = (CheckBoxList)MovieDetailsView.FindControl("ddlCountriesIPTV");
             TextBox txtBoxIPTVRights = (TextBox)MovieDetailsView.FindControl("txtBoxIPTVRights");
 
-            // double Postback! -> wrights countries twice inside TextBox if there's no next line of code
-            txtBoxIPTVRights.Text = "";
-            // txtBoxVODRights.Text = ddlCountries2.SelectedItem.Text.ToString();
-            //Label1.Text = ddlCountries2.SelectedItem.Text.ToString();
-
+           txtBoxIPTVRights.Text = "";
+           
             // for counting selected items
             int i = 0;
 
@@ -408,11 +371,8 @@ namespace MovieCatalog
             CheckBoxList ddlCountriesVOD = (CheckBoxList)MovieDetailsView.FindControl("ddlCountriesVOD");
             TextBox txtBoxVODRights = (TextBox)MovieDetailsView.FindControl("txtBoxVODRights");
 
-            // double Postback! -> wrights countries twice inside TextBox if there's no next line of code
             txtBoxVODRights.Text = "";
-            // txtBoxVODRights.Text = ddlCountries2.SelectedItem.Text.ToString();
-            //Label1.Text = ddlCountries2.SelectedItem.Text.ToString();
-
+           
             // for counting selected items
             int i = 0;
 
@@ -422,8 +382,7 @@ namespace MovieCatalog
                 {
                     i++;
                     txtBoxVODRights.Text += item.Text + ", ";
-                    // Label1.Text += ddlCountries2.SelectedItem.Value + ", ";
-                }
+                 }
 
             }
 
@@ -471,7 +430,7 @@ namespace MovieCatalog
             DropDownListMonth.DataBind();
             DropDownListExpMonth.DataBind();
         }
-        // stackoverflow.com/questions/14379898/add-next-previous-year-button-to-asp-calendar-control
+        
         private void LoadYears()
         {
             DropDownList DropDownListYear = (DropDownList)MovieDetailsView.FindControl("DropDownListYear");
@@ -515,12 +474,6 @@ namespace MovieCatalog
             startDateCalendar.VisibleDate = new DateTime(year, month, 1);
             startDateCalendar.SelectedDate = new DateTime(year, month, 1);
 
-            // Case: if selected Day in Month is 30 or 31 - if month is changed to February then exception will be thrown - System.ArgumentOutOfRangeException
-            // System.ArgumentOutOfRangeException: Year, Month, and Day parameters describe an un-representable DateTime.
-            /*
-            startDateCalendar.VisibleDate = new DateTime(year, month, startDateCalendar.SelectedDate.Day);
-            startDateCalendar.SelectedDate = new DateTime(year, month, startDateCalendar.SelectedDate.Day);
-            */
             // show selected Month in TextBox - startDateTextBox
             startDateCalendar_SelectionChanged(sender, e);
         }
@@ -553,12 +506,6 @@ namespace MovieCatalog
             expDateCalendar.VisibleDate = new DateTime(year, month, 1);
             expDateCalendar.SelectedDate = new DateTime(year, month, 1);
 
-            // Case: if selected Day in Month is 30 or 31 - if month is changed to February then exception will be thrown - System.ArgumentOutOfRangeException
-            // System.ArgumentOutOfRangeException: Year, Month, and Day parameters describe an un-representable DateTime.
-            /*
-            startDateCalendar.VisibleDate = new DateTime(year, month, startDateCalendar.SelectedDate.Day);
-            startDateCalendar.SelectedDate = new DateTime(year, month, startDateCalendar.SelectedDate.Day);
-            */
             // show selected Month in TextBox - startDateTextBox
             expireDateCalendar_SelectionChanged(sender, e);
         }
@@ -568,12 +515,6 @@ namespace MovieCatalog
         {
             try
             {
-                //MoviesDBEntities context = new MoviesDBEntities();
-                //var movieToUpdate = context.Movies.Where(m => m.Id == movieID).First();
-
-                //MovieCatalogRepository context2 = new MovieCatalogRepository();
-                //var movieToUpdate = context2.GetMovieByID(movieID);
-
                 MovieCatalogBL contextBL = new MovieCatalogBL();
                 var movieToUpdate = contextBL.GetMovieByID(movieID);
 
@@ -682,40 +623,10 @@ namespace MovieCatalog
 
                 Int16 year = Convert.ToInt16(e.NewValues["Year"]);
 
-                /*
-                movieToUpdate.ContentProvider = contentProvider;
-                movieToUpdate.OriginalName = title;
-                movieToUpdate.Genre = genre;
-                movieToUpdate.Duration = movieDuration;
-                movieToUpdate.Country = country;
-
-                movieToUpdate.RightsIPTV = rightsIPTV;
-                movieToUpdate.RightsVOD = rightsVOD;
-                movieToUpdate.SVODRights = svodRights;
-                movieToUpdate.AncillaryRights = ancillaryRights;
-
-                movieToUpdate.StartDate = startDate;
-                movieToUpdate.ExpireDate = expireDate;
-
-                movieToUpdate.Comment = comment;
-                movieToUpdate.Year = year;
-                */
-                //context.SaveChanges();
-
-                //context2.UpdateMovieByID(movieID, contentProvider, title, genre, movieDuration, country, rightsIPTV, rightsVOD, svodRights, ancillaryRights, startDate, expireDate, comment, year);
                 contextBL.UpdateMovieByID(movieID, contentProvider, title, genre, movieDuration, country, rightsIPTV, rightsVOD, svodRights, ancillaryRights, startDate, expireDate, comment, year);
                 lblMessage.ForeColor = System.Drawing.Color.Black;
                 lblMessage.Text = "Movie " + title + " updated.";
              }
-            /*
-            catch (OptimisticConcurrencyException)
-            {
-            lblMessage.Text = "Error while updating movie record. Other user changed movie data since you retrieved it." 
-                            + "The record you attempted to update has been modified by another user since you last "
-                            + "visited this page. Your update was canceled to allow you to review the other user's "+
-                               "changes and determine if you still want to update this record.";
-            }
-            */
             catch (DbUpdateException)
             {
                 lblMessage.Text = "Update Exception. Error while updating movie data. Please try again.";
